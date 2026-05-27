@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Practical25.API/Practical25.API.csproj" />
+  <Project Path="Practical25.DAL/Practical25.DAL.csproj" Id="ee810533-a6b3-46ea-abff-4a7f48e9c98f" />
+  <Project Path="Prcatical25.Domain/Prcatical25.Domain.csproj" />
+</Solution>
