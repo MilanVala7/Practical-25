@@ -32,7 +32,6 @@ public class CreateEmployeeHandler : IRequestHandler<CreateEmployeeRequest, Crea
             created.DepartmentId,
             created.EmailId,
             created.JoiningDate,
-            created.Status,
-            created.Notes);
+            created.Status);
     }
 }

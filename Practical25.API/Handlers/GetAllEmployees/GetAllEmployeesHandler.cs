@@ -20,8 +20,7 @@ public class GetAllEmployeesHandler : IRequestHandler<GetAllEmployeesRequest, Ge
                 emp.DepartmentId,
                 emp.EmailId,
                 emp.JoiningDate,
-                emp.Status,
-                emp.Notes))
+                emp.Status))
             .ToList();
 
         return new GetAllEmployeesResponse(res);

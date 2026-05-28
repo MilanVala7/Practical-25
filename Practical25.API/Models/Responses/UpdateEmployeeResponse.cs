@@ -7,5 +7,4 @@ public record UpdateEmployeeResponse(
     Department DepartmentId,
     string EmailId,
     DateTime JoiningDate,
-    bool Status,
-    string? Notes);
+    bool Status);

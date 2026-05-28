@@ -25,7 +25,6 @@ public class GetEmployeeByIdHandler : IRequestHandler<GetEmployeeByIdRequest, Ge
             emp.DepartmentId,
             emp.EmailId,
             emp.JoiningDate,
-            emp.Status,
-            emp.Notes);
+            emp.Status);
     }
 }

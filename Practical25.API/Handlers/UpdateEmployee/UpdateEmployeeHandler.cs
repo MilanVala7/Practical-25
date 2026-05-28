@@ -30,7 +30,6 @@ public class UpdateEmployeeHandler : IRequestHandler<UpdateEmployeeRequest, Upda
             res.DepartmentId,
             res.EmailId,
             res.JoiningDate,
-            res.Status,
-            res.Notes);
+            res.Status);
     }
 }
