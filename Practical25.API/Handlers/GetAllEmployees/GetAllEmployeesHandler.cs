@@ -1,26 +1,29 @@
-using Practical25.API.Models.Responses;
-using Practical25.DAL.Repositories;
-
 namespace Practical25.API.Handlers.GetAllEmployees;
 
-public class GetAllEmployeesHandler(EmployeeQueryRepo employeeQueryRepo)
-    : IRequestHandler<GetAllEmployeesRequest, GetAllEmployeesResponse>
+public class GetAllEmployeesHandler : IRequestHandler<GetAllEmployeesRequest, GetAllEmployeesResponse>
 {
-    public async Task<GetAllEmployeesResponse> Handle(GetAllEmployeesRequest request, CancellationToken cancellationToken)
+    private readonly EmployeeQueryRepo _empRepo;
+
+    public GetAllEmployeesHandler(EmployeeQueryRepo employeeQueryRepo)
     {
-        var employees = await employeeQueryRepo.GetAllAsync(cancellationToken);
-        var results = employees
-            .Select(employee => new GetEmployeeResponse(
-                employee.Id,
-                employee.Name,
-                employee.Salary,
-                employee.DepartmentId,
-                employee.EmailId,
-                employee.JoiningDate,
-                employee.Status,
-                employee.Notes))
+        _empRepo = employeeQueryRepo;
+    }
+
+    public async Task<GetAllEmployeesResponse> Handle(GetAllEmployeesRequest req, CancellationToken cancellationToken)
+    {
+        var employees = await _empRepo.GetAllAsync(cancellationToken);
+        var res = employees
+            .Select(emp => new GetEmployeeResponse(
+                emp.Id,
+                emp.Name,
+                emp.Salary,
+                emp.DepartmentId,
+                emp.EmailId,
+                emp.JoiningDate,
+                emp.Status,
+                emp.Notes))
             .ToList();
 
-        return new GetAllEmployeesResponse(results);
+        return new GetAllEmployeesResponse(res);
     }
 }

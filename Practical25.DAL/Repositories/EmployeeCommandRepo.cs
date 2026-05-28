@@ -1,37 +1,41 @@
-using Practical25.DAL.Data;
-
 namespace Practical25.DAL.Repositories;
 
-public class EmployeeCommandRepo(AppDbContext dbContext)
+public class EmployeeCommandRepo
 {
-    public async Task<Employee> CreateAsync(Employee employee, CancellationToken cancellationToken)
+    private readonly AppDbContext _context;
+    public EmployeeCommandRepo(AppDbContext dbContext)
     {
-        dbContext.Employees.Add(employee);
-        await dbContext.SaveChangesAsync(cancellationToken);
-        return employee;
+        _context = dbContext;
+    }
+
+    public async Task<Employee> CreateAsync(Employee e, CancellationToken cancellationToken)
+    {
+        _context.Employees.Add(e);
+        await _context.SaveChangesAsync(cancellationToken);
+        return e;
     }
 
     public async Task<Employee?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return await dbContext.Employees.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
+        return await _context.Employees.FirstOrDefaultAsync(e => e.Id == id, cancellationToken);
     }
 
-    public async Task<Employee> UpdateAsync(Employee employee, CancellationToken cancellationToken)
+    public async Task<Employee> UpdateAsync(Employee e, CancellationToken cancellationToken)
     {
-        employee.UpdatedAt = DateTime.UtcNow;
-        dbContext.Employees.Update(employee);
-        await dbContext.SaveChangesAsync(cancellationToken);
-        return employee;
+        e.UpdatedAt = DateTime.UtcNow;
+        _context.Employees.Update(e);
+        await _context.SaveChangesAsync(cancellationToken);
+        return e;
     }
 
-    public async Task<bool> DeleteAsync(Employee employee, CancellationToken cancellationToken)
+    public async Task<bool> DeleteAsync(Employee e, CancellationToken cancellationToken)
     {
-        employee.Status = false;
-        employee.DeletedAt = DateTime.UtcNow;
-        employee.UpdatedAt = DateTime.UtcNow;
+        e.Status = false;
+        e.DeletedAt = DateTime.UtcNow;
+        e.UpdatedAt = DateTime.UtcNow;
 
-        dbContext.Employees.Update(employee);
-        await dbContext.SaveChangesAsync(cancellationToken);
+        _context.Employees.Update(e);
+        await _context.SaveChangesAsync(cancellationToken);
         return true;
     }
 }

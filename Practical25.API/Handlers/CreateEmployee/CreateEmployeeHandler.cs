@@ -1,27 +1,29 @@
-using Practical25.API.Models.Responses;
-using Practical25.DAL.Repositories;
-using Practical25.Domain.Entities;
-
 namespace Practical25.API.Handlers.CreateEmployee;
 
-public class CreateEmployeeHandler(EmployeeCommandRepo employeeCommandRepo)
-    : IRequestHandler<CreateEmployeeRequest, CreateEmployeeResponse>
+public class CreateEmployeeHandler : IRequestHandler<CreateEmployeeRequest, CreateEmployeeResponse>
 {
-    public async Task<CreateEmployeeResponse> Handle(CreateEmployeeRequest request, CancellationToken cancellationToken)
+    private readonly EmployeeCommandRepo _empRepo;
+
+    public CreateEmployeeHandler(EmployeeCommandRepo empCommandRepo)
     {
-        var employee = new Employee
+        _empRepo = empCommandRepo;
+    }
+
+    public async Task<CreateEmployeeResponse> Handle(CreateEmployeeRequest req, CancellationToken cancellationToken)
+    {
+        var emp = new Employee
         {
-            Name = request.Name,
-            Salary = request.Salary,
-            DepartmentId = request.DepartmentId,
-            EmailId = request.EmailId,
+            Name = req.Name,
+            Salary = req.Salary,
+            DepartmentId = req.DepartmentId,
+            EmailId = req.EmailId,
             JoiningDate = DateTime.UtcNow,
             Status = true,
             CreatedAt = DateTime.UtcNow,
             UpdatedAt = DateTime.UtcNow
         };
 
-        var created = await employeeCommandRepo.CreateAsync(employee, cancellationToken);
+        var created = await _empRepo.CreateAsync(emp, cancellationToken);
 
         return new CreateEmployeeResponse(
             created.Id,

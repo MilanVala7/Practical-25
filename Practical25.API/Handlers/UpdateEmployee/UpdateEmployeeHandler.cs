@@ -1,35 +1,36 @@
-using Practical25.API.Models.Responses;
-using Practical25.DAL.Repositories;
-
 namespace Practical25.API.Handlers.UpdateEmployee;
 
-public class UpdateEmployeeHandler(EmployeeCommandRepo employeeCommandRepo)
-    : IRequestHandler<UpdateEmployeeRequest, UpdateEmployeeResponse>
+public class UpdateEmployeeHandler : IRequestHandler<UpdateEmployeeRequest, UpdateEmployeeResponse>
 {
-    public async Task<UpdateEmployeeResponse> Handle(UpdateEmployeeRequest request, CancellationToken cancellationToken)
+    private readonly EmployeeCommandRepo _empRepo;
+    public UpdateEmployeeHandler(EmployeeCommandRepo repo)
     {
-        var employee = await employeeCommandRepo.GetByIdAsync(request.Id, cancellationToken);
+        _empRepo = repo;
+    }
+    public async Task<UpdateEmployeeResponse> Handle(UpdateEmployeeRequest req, CancellationToken cancellationToken)
+    {
+        var emp = await _empRepo.GetByIdAsync(req.Id, cancellationToken);
 
-        if (employee is null)
+        if (emp is null)
         {
             throw new KeyNotFoundException("Employee not found.");
         }
 
-        employee.Name = request.Name;
-        employee.Salary = request.Salary;
-        employee.DepartmentId = request.DepartmentId;
-        employee.EmailId = request.EmailId;
+        emp.Name = req.Name;
+        emp.Salary = req.Salary;
+        emp.DepartmentId = req.DepartmentId;
+        emp.EmailId = req.EmailId;
 
-        var updated = await employeeCommandRepo.UpdateAsync(employee, cancellationToken);
+        var res = await _empRepo.UpdateAsync(emp, cancellationToken);
 
         return new UpdateEmployeeResponse(
-            updated.Id,
-            updated.Name,
-            updated.Salary,
-            updated.DepartmentId,
-            updated.EmailId,
-            updated.JoiningDate,
-            updated.Status,
-            updated.Notes);
+            res.Id,
+            res.Name,
+            res.Salary,
+            res.DepartmentId,
+            res.EmailId,
+            res.JoiningDate,
+            res.Status,
+            res.Notes);
     }
 }

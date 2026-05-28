@@ -1,10 +1,3 @@
-using Microsoft.AspNetCore.Mvc;
-using Practical25.API.Handlers.CreateEmployee;
-using Practical25.API.Handlers.DeleteEmployee;
-using Practical25.API.Handlers.GetAllEmployees;
-using Practical25.API.Handlers.GetEmployeeById;
-using Practical25.API.Handlers.UpdateEmployee;
-
 namespace Practical25.API.Controllers;
 
 [ApiController]
@@ -18,15 +11,10 @@ public class EmployeesController(IMediator med) : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id = response.Id }, response);
     }
 
-    [HttpPut("{id:int}")]
-    public async Task<ActionResult<UpdateEmployeeResponse>> Update(int id, UpdateEmployeeRequest req,
+    [HttpPut]
+    public async Task<ActionResult<UpdateEmployeeResponse>> Update(UpdateEmployeeRequest req,
         CancellationToken cancellationToken)
     {
-        if (id != req.Id)
-        {
-            return BadRequest("Route-id and request-id must match.");
-        }
-
         try
         {
             var res = await med.Send(req, cancellationToken);
@@ -52,8 +40,8 @@ public class EmployeesController(IMediator med) : ControllerBase
         }
     }
 
-    [HttpGet("{id:int}")]
-    public async Task<ActionResult<GetEmployeeResponse>> GetById([FromQuery]  int? id, CancellationToken cancellationToken)
+    [HttpGet]
+    public async Task<ActionResult<GetEmployeeResponse>> GetById(int? id, CancellationToken cancellationToken)
     {
         try
         {

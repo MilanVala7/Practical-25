@@ -1,5 +1,3 @@
-using Practical25.Domain.Enums;
-
 namespace Practical25.Domain.Entities;
 
 public class Employee : BaseEntity

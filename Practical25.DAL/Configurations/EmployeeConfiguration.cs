@@ -1,5 +1,3 @@
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
 namespace Practical25.DAL.Configurations;
 
 public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>

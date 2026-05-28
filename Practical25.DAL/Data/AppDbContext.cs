@@ -1,13 +1,17 @@
-using Practical25.DAL.Configurations;
-
 namespace Practical25.DAL.Data;
 
-public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
+public class AppDbContext : DbContext
 {
-    public DbSet<Employee> Employees => Set<Employee>();
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
+    {
+    }
+
+    public DbSet<Employee> Employees { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new EmployeeConfiguration());
+
+        modelBuilder.Entity<Employee>().HasQueryFilter(x => x.Status);
     }
 }

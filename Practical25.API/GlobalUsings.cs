@@ -1,4 +1,14 @@
 global using FluentValidation;
 global using MediatR;
-global using Practical25.Domain.Enums;
+global using Microsoft.AspNetCore.Mvc;
+global using Practical25.API.Behaviors;
+global using Practical25.API.Handlers.CreateEmployee;
+global using Practical25.API.Handlers.DeleteEmployee;
+global using Practical25.API.Handlers.GetAllEmployees;
+global using Practical25.API.Handlers.GetEmployeeById;
+global using Practical25.API.Handlers.UpdateEmployee;
 global using Practical25.API.Models.Responses;
+global using Practical25.DAL;
+global using Practical25.DAL.Repositories;
+global using Practical25.Domain.Entities;
+global using Practical25.Domain.Enums;

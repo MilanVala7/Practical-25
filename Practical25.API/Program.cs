@@ -1,6 +1,3 @@
-using Practical25.API.Behaviors;
-using Practical25.DAL;
-
 namespace Practical25.API;
 
 public class Program
@@ -10,9 +7,11 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         builder.Services.AddControllers();
-        builder.Services.AddOpenApi();
+        builder.Services.AddEndpointsApiExplorer();
+        builder.Services.AddSwaggerGen();
 
-        builder.Services.AddDal(builder.Configuration);
+        builder.Services.AddDAL(builder.Configuration);
+
         builder.Services.AddMediatR(typeof(Program).Assembly);
         builder.Services.AddValidatorsFromAssemblyContaining<Program>();
         builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
@@ -21,7 +20,9 @@ public class Program
 
         if (app.Environment.IsDevelopment())
         {
-            app.MapOpenApi();
+            app.UseSwagger();
+
+            app.UseSwaggerUI();
         }
 
         app.UseHttpsRedirection();

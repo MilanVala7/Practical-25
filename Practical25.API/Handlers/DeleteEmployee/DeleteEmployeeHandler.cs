@@ -1,22 +1,25 @@
-using Practical25.API.Models.Responses;
-using Practical25.DAL.Repositories;
-
 namespace Practical25.API.Handlers.DeleteEmployee;
 
-public class DeleteEmployeeHandler(EmployeeCommandRepo employeeCommandRepo)
-    : IRequestHandler<DeleteEmployeeRequest, DeleteEmployeeResponse>
+public class DeleteEmployeeHandler : IRequestHandler<DeleteEmployeeRequest, DeleteEmployeeResponse>
 {
-    public async Task<DeleteEmployeeResponse> Handle(DeleteEmployeeRequest request, CancellationToken cancellationToken)
-    {
-        var employee = await employeeCommandRepo.GetByIdAsync(request.Id, cancellationToken);
+    private readonly EmployeeCommandRepo _empRepo;
 
-        if (employee is null)
+    public DeleteEmployeeHandler(EmployeeCommandRepo empCommandRepo)
+    {
+        _empRepo = empCommandRepo;
+    }
+
+    public async Task<DeleteEmployeeResponse> Handle(DeleteEmployeeRequest req, CancellationToken cancellationToken)
+    {
+        var emp = await _empRepo.GetByIdAsync(req.Id, cancellationToken);
+
+        if (emp is null)
         {
             throw new KeyNotFoundException("Employee not found.");
         }
 
-        await employeeCommandRepo.DeleteAsync(employee, cancellationToken);
+        await _empRepo.DeleteAsync(emp, cancellationToken);
 
-        return new DeleteEmployeeResponse(employee.Id, employee.Status, employee.DeletedAt, employee.UpdatedAt);
+        return new DeleteEmployeeResponse(emp.Id, emp.Status, emp.DeletedAt, emp.UpdatedAt);
     }
 }
